@@ -10,10 +10,11 @@ import { ThemeToggle } from '../theme-toggle';
 import Logo from '../logo';
 
 const navLinks = [
-  { href: '#about', label: 'Qui sommes-nous ?' },
-  { href: '#services', label: 'Services' },
-  { href: '#commitments', label: 'Engagements' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#about', label: 'Qui sommes-nous ?' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#commitments', label: 'Engagements' },
+  { href: '/blog', label: 'Actualités' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 export default function Header() {
@@ -30,25 +31,18 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (isMounted) {
-      const handleScroll = () => {
-        setScrolled(window.scrollY > 10);
-      };
-      handleScroll(); // Set initial state
-    }
-  }, [isMounted]);
-
-
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const targetElement = document.querySelector(href);
-    if (targetElement) {
+    if (href.startsWith('/#')) {
+      e.preventDefault();
+      const targetId = href.substring(2);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
         targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
     }
     setMobileMenuOpen(false);
   };
-
+  
   const baseHeaderClass = 'fixed top-0 left-0 right-0 z-50 transition-all duration-300';
   const scrolledHeaderClass = 'bg-background/95 shadow-md backdrop-blur-sm';
   const transparentHeaderClass = 'bg-transparent';
@@ -72,7 +66,7 @@ export default function Header() {
           ))}
           <ThemeToggle />
           <Button asChild size="sm">
-            <Link href="#contact" onClick={(e) => handleScrollTo(e, '#contact')}>Contactez-nous</Link>
+            <Link href="/#contact" onClick={(e) => handleScrollTo(e, '/#contact')}>Contactez-nous</Link>
           </Button>
         </nav>
         <div className="flex items-center md:hidden">
@@ -101,7 +95,7 @@ export default function Header() {
                   ))}
                 </nav>
                 <Button asChild className="mt-8">
-                  <Link href="#contact" onClick={(e) => handleScrollTo(e, '#contact')}>Contactez-nous</Link>
+                  <Link href="/#contact" onClick={(e) => handleScrollTo(e, '/#contact')}>Contactez-nous</Link>
                 </Button>
               </div>
             </SheetContent>

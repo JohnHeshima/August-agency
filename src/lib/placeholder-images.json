@@ -47,6 +47,24 @@
       "description": "A group of people in a training session in a classroom.",
       "imageUrl": "https://picsum.photos/seed/serv5/600/400",
       "imageHint": "classroom training"
+    },
+    {
+      "id": "news-1",
+      "description": "A group of people at a business conference.",
+      "imageUrl": "https://picsum.photos/seed/news1/600/400",
+      "imageHint": "business conference"
+    },
+    {
+      "id": "news-2",
+      "description": "A community outreach event with volunteers.",
+      "imageUrl": "https://picsum.photos/seed/news2/600/400",
+      "imageHint": "community event"
+    },
+    {
+      "id": "news-3",
+      "description": "A new mining equipment being inaugurated.",
+      "imageUrl": "https://picsum.photos/seed/news3/600/400",
+      "imageHint": "new equipment"
     }
   ]
 }

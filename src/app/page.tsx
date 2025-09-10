@@ -4,6 +4,7 @@ import Hero from '@/components/sections/hero';
 import About from '@/components/sections/about';
 import Services from '@/components/sections/services';
 import Commitments from '@/components/sections/commitments';
+import News from '@/components/sections/news';
 import Testimonials from '@/components/sections/testimonials';
 import Contact from '@/components/sections/contact';
 
@@ -16,6 +17,7 @@ export default function Home() {
         <About />
         <Services />
         <Commitments />
+        <News />
         <Testimonials />
         <Contact />
       </main>
