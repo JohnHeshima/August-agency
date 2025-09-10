@@ -52,31 +52,33 @@ export default function Services() {
             Une gamme complète de solutions pour accompagner votre succès.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 [perspective:1000px]">
           {servicesData.map((service) => {
             const image = PlaceHolderImages.find(img => img.id === service.imageId);
             return (
               <Link key={service.title} href={`/services/${service.slug}`} className="group block">
-                <Card className="overflow-hidden bg-background border-border/50 h-full transition-all duration-300 group-hover:border-primary/50 group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-primary/10">
-                  {image && (
-                    <div className="relative h-48 w-full overflow-hidden">
-                      <Image
-                        src={image.imageUrl}
-                        alt={service.title}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        data-ai-hint={image.imageHint}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
+                <Card className="overflow-hidden bg-background border-border/50 h-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(10deg)_rotateX(4deg)] group-hover:shadow-2xl group-hover:shadow-primary/20">
+                  <div className="transition-all duration-500 [transform:translateZ(40px)]">
+                    {image && (
+                      <div className="relative h-48 w-full overflow-hidden">
+                        <Image
+                          src={image.imageUrl}
+                          alt={service.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          data-ai-hint={image.imageHint}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <div className="flex items-center gap-4 mb-4">
+                        {service.icon}
+                        <CardTitle className="text-xl font-semibold">{service.title}</CardTitle>
+                      </div>
+                      <p className="text-muted-foreground">{service.description}</p>
                     </div>
-                  )}
-                  <CardHeader className="flex-row items-center gap-4">
-                    {service.icon}
-                    <CardTitle className="text-xl font-semibold">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{service.description}</p>
-                  </CardContent>
+                  </div>
                 </Card>
               </Link>
             );
