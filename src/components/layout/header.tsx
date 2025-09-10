@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
 
 const navLinks = [
   { href: '#about', label: 'Qui sommes-nous ?' },
@@ -14,27 +16,32 @@ const navLinks = [
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
   };
 
+  const headerClasses = cn(
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+    scrolled ? 'bg-background/95 shadow-md backdrop-blur-sm' : 'bg-transparent'
+  );
+
   return (
-    <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled ? 'bg-background/95 shadow-md backdrop-blur-sm' : 'bg-transparent'
-      )}
-    >
+    <header className={isClient ? headerClasses : 'fixed top-0 left-0 right-0 z-50 bg-transparent'}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="text-2xl font-bold font-headline text-primary">
           AGUST
@@ -50,12 +57,40 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-           <Button asChild size="sm">
+          <Button asChild size="sm">
             <Link href="#contact" onClick={(e) => handleScrollTo(e, '#contact')}>Contactez-nous</Link>
           </Button>
         </nav>
         <div className="md:hidden">
-          {/* Mobile menu could be implemented here */}
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <div className="flex flex-col h-full p-4">
+                 <Link href="/" className="text-2xl font-bold font-headline text-primary mb-8">
+                    AGUST
+                </Link>
+                <nav className="flex flex-col space-y-4">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => handleScrollTo(e, link.href)}
+                      className="text-lg font-medium text-foreground hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </nav>
+                <Button asChild className="mt-8">
+                  <Link href="#contact" onClick={(e) => handleScrollTo(e, '#contact')}>Contactez-nous</Link>
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
