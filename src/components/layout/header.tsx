@@ -23,6 +23,7 @@ export default function Header() {
       setScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
+    // Initial check
     handleScroll(); 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
