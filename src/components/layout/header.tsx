@@ -22,11 +22,11 @@ export default function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-    
-    // Add event listener only on the client side, after the component has mounted
+
+    // Add event listener only on the client side
     window.addEventListener('scroll', handleScroll);
 
-    // Run the scroll handler once initially to set the correct state
+    // Run the scroll handler once on mount to set the initial state correctly
     handleScroll();
 
     // Clean up the event listener when the component unmounts
@@ -35,7 +35,10 @@ export default function Header() {
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    const targetElement = document.querySelector(href);
+    if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
     setMobileMenuOpen(false);
   };
 
