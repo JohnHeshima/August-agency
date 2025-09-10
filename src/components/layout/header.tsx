@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
+import { ThemeToggle } from '../theme-toggle';
 
 const navLinks = [
   { href: '#about', label: 'Qui sommes-nous ?' },
@@ -17,19 +18,21 @@ const navLinks = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
     
     window.addEventListener('scroll', handleScroll);
-    
-    // Call handler right away to set initial state
-    handleScroll();
+    handleScroll(); // Call handler right away to set initial state
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -40,10 +43,30 @@ export default function Header() {
     setMobileMenuOpen(false);
   };
 
+  const baseHeaderClass = 'fixed top-0 left-0 right-0 z-50 transition-all duration-300';
+  const scrolledHeaderClass = 'bg-background/95 shadow-md backdrop-blur-sm';
+  const transparentHeaderClass = 'bg-transparent';
+
+  if (!isMounted) {
+    return (
+      <header className={cn(baseHeaderClass, transparentHeaderClass)}>
+        <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+           <Link href="/" className="text-2xl font-bold font-headline text-primary">
+            AGUST
+          </Link>
+          <div className="flex items-center space-x-2">
+             <div className="h-9 w-9"></div>
+             <div className="md:hidden h-10 w-10"></div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <header className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled ? 'bg-background/95 shadow-md backdrop-blur-sm' : 'bg-transparent'
+        baseHeaderClass,
+        scrolled ? scrolledHeaderClass : transparentHeaderClass
       )}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="text-2xl font-bold font-headline text-primary">
@@ -60,11 +83,13 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+          <ThemeToggle />
           <Button asChild size="sm">
             <Link href="#contact" onClick={(e) => handleScrollTo(e, '#contact')}>Contactez-nous</Link>
           </Button>
         </nav>
-        <div className="md:hidden">
+        <div className="flex items-center md:hidden">
+           <ThemeToggle />
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
