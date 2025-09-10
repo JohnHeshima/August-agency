@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -23,14 +22,12 @@ export default function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-
-    // Add event listener only on the client side
+    
     window.addEventListener('scroll', handleScroll);
-
-    // Run the scroll handler once on mount to set the initial state correctly
+    
+    // Call handler right away to set initial state
     handleScroll();
 
-    // Clean up the event listener when the component unmounts
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
