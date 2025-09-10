@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
+import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Truck, Handshake, BarChart3, Megaphone, GraduationCap } from 'lucide-react';
 
@@ -9,30 +10,35 @@ const servicesData = [
     title: 'Logistique & Transport',
     description: 'Gestion optimisée de la chaîne d’approvisionnement, du transport local à l’international, pour garantir la ponctualité et la sécurité de vos biens.',
     imageId: 'service-logistics',
+    slug: 'logistique-et-transport',
   },
   {
     icon: <Handshake className="h-8 w-8 text-primary" />,
     title: 'Négociation & Intermédiation',
     description: 'Facilitation des accords commerciaux et partenariats stratégiques. Nous représentons vos intérêts avec expertise pour des résultats mutuellement bénéfiques.',
     imageId: 'service-negotiation',
+    slug: 'negociation-et-intermediation',
   },
   {
     icon: <BarChart3 className="h-8 w-8 text-primary" />,
     title: 'Comptabilité & Stratégie',
     description: 'Services comptables complets et conseils stratégiques pour optimiser votre performance financière, assurer la conformité et piloter votre croissance.',
     imageId: 'service-accounting',
+    slug: 'comptabilite-et-strategie',
   },
   {
     icon: <Megaphone className="h-8 w-8 text-primary" />,
     title: 'Communication professionnelle',
     description: 'Élaboration de stratégies de communication percutantes pour renforcer votre image de marque, gérer votre réputation et engager vos parties prenantes.',
     imageId: 'service-communication',
+    slug: 'communication-professionnelle',
   },
   {
     icon: <GraduationCap className="h-8 w-8 text-primary" />,
     title: 'Formation',
     description: 'Programmes de formation sur mesure pour développer les compétences de vos équipes dans les domaines techniques, managériaux et de la sécurité.',
     imageId: 'service-training',
+    slug: 'formation',
   },
 ];
 
@@ -50,27 +56,29 @@ export default function Services() {
           {servicesData.map((service) => {
             const image = PlaceHolderImages.find(img => img.id === service.imageId);
             return (
-              <Card key={service.title} className="overflow-hidden bg-background border-border/50 group transition-all duration-300 hover:border-primary/50 hover:-translate-y-2">
-                {image && (
-                  <div className="relative h-48 w-full overflow-hidden">
-                    <Image
-                      src={image.imageUrl}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      data-ai-hint={image.imageHint}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                )}
-                <CardHeader className="flex-row items-center gap-4">
-                  {service.icon}
-                  <CardTitle className="text-xl font-semibold">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{service.description}</p>
-                </CardContent>
-              </Card>
+              <Link key={service.title} href={`/services/${service.slug}`} className="group block">
+                <Card className="overflow-hidden bg-background border-border/50 h-full transition-all duration-300 group-hover:border-primary/50 group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-primary/10">
+                  {image && (
+                    <div className="relative h-48 w-full overflow-hidden">
+                      <Image
+                        src={image.imageUrl}
+                        alt={service.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        data-ai-hint={image.imageHint}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+                  <CardHeader className="flex-row items-center gap-4">
+                    {service.icon}
+                    <CardTitle className="text-xl font-semibold">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{service.description}</p>
+                  </CardContent>
+                </Card>
+              </Link>
             );
           })}
         </div>
