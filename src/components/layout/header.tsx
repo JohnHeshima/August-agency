@@ -16,11 +16,9 @@ const navLinks = [
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
@@ -35,13 +33,11 @@ export default function Header() {
     setMobileMenuOpen(false);
   };
 
-  const headerClasses = cn(
-    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-    scrolled ? 'bg-background/95 shadow-md backdrop-blur-sm' : 'bg-transparent'
-  );
-
   return (
-    <header className={isClient ? headerClasses : 'fixed top-0 left-0 right-0 z-50 bg-transparent'}>
+    <header className={cn(
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        scrolled ? 'bg-background/95 shadow-md backdrop-blur-sm' : 'bg-transparent'
+      )}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="text-2xl font-bold font-headline text-primary">
           AGUST
