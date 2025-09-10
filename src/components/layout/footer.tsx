@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Facebook, Linkedin, Twitter } from 'lucide-react';
+import Logo from '../logo';
 
 const offices = [
     { city: 'Kinshasa', address: '123 Avenue de la Révolution, Gombe, Kinshasa, RDC' },
@@ -13,8 +14,8 @@ export default function Footer() {
             <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="md:col-span-1">
-                        <h3 className="text-2xl font-bold font-headline text-primary">AGUST</h3>
-                        <p className="mt-2 text-sm text-muted-foreground">L’expertise au service de vos ambitions.</p>
+                        <Logo />
+                        <p className="mt-4 text-sm text-muted-foreground">L’expertise au service de vos ambitions.</p>
                         <div className="mt-4 flex space-x-4">
                             <Link href="#" className="text-muted-foreground hover:text-primary"><Facebook size={20} /></Link>
                             <Link href="#" className="text-muted-foreground hover:text-primary"><Twitter size={20} /></Link>

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { ThemeToggle } from '../theme-toggle';
+import Logo from '../logo';
 
 const navLinks = [
   { href: '#about', label: 'Qui sommes-nous ?' },
@@ -22,16 +23,21 @@ export default function Header() {
 
   useEffect(() => {
     setIsMounted(true);
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-    
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Call handler right away to set initial state
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      const handleScroll = () => {
+        setScrolled(window.scrollY > 10);
+      };
+      handleScroll(); // Set initial state
+    }
+  }, [isMounted]);
 
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -46,32 +52,13 @@ export default function Header() {
   const baseHeaderClass = 'fixed top-0 left-0 right-0 z-50 transition-all duration-300';
   const scrolledHeaderClass = 'bg-background/95 shadow-md backdrop-blur-sm';
   const transparentHeaderClass = 'bg-transparent';
-
-  if (!isMounted) {
-    return (
-      <header className={cn(baseHeaderClass, transparentHeaderClass)}>
-        <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-           <Link href="/" className="text-2xl font-bold font-headline text-primary">
-            AGUST
-          </Link>
-          <div className="flex items-center space-x-2">
-             <div className="h-9 w-9"></div>
-             <div className="md:hidden h-10 w-10"></div>
-          </div>
-        </div>
-      </header>
-    );
-  }
+  
+  const headerClasses = isMounted ? cn(baseHeaderClass, scrolled ? scrolledHeaderClass : transparentHeaderClass) : cn(baseHeaderClass, transparentHeaderClass);
 
   return (
-    <header className={cn(
-        baseHeaderClass,
-        scrolled ? scrolledHeaderClass : transparentHeaderClass
-      )}>
+    <header className={headerClasses}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="text-2xl font-bold font-headline text-primary">
-          AGUST
-        </Link>
+        <Logo />
         <nav className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (
             <Link
@@ -98,9 +85,9 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="left">
               <div className="flex flex-col h-full p-4">
-                 <Link href="/" className="text-2xl font-bold font-headline text-primary mb-8">
-                    AGUST
-                </Link>
+                 <div className="mb-8">
+                    <Logo />
+                 </div>
                 <nav className="flex flex-col space-y-4">
                   {navLinks.map((link) => (
                     <Link
