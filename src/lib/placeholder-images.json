@@ -1,3 +1,52 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-1",
+      "description": "A large truck driving through a mining area.",
+      "imageUrl": "https://picsum.photos/seed/hero1/1920/1080",
+      "imageHint": "logistics truck"
+    },
+    {
+      "id": "hero-2",
+      "description": "An aerial view of a large-scale industrial mine.",
+      "imageUrl": "https://picsum.photos/seed/hero2/1920/1080",
+      "imageHint": "mining industry"
+    },
+    {
+      "id": "hero-3",
+      "description": "Professionals in a modern office having a business meeting.",
+      "imageUrl": "https://picsum.photos/seed/hero3/1920/1080",
+      "imageHint": "business meeting"
+    },
+    {
+      "id": "service-logistics",
+      "description": "A container ship at a busy port.",
+      "imageUrl": "https://picsum.photos/seed/serv1/600/400",
+      "imageHint": "cargo ship"
+    },
+    {
+      "id": "service-negotiation",
+      "description": "Two people shaking hands to close a business deal.",
+      "imageUrl": "https://picsum.photos/seed/serv2/600/400",
+      "imageHint": "handshake business"
+    },
+    {
+      "id": "service-accounting",
+      "description": "A clean and organized office desk with a laptop and documents.",
+      "imageUrl": "https://picsum.photos/seed/serv3/600/400",
+      "imageHint": "office desk"
+    },
+    {
+      "id": "service-communication",
+      "description": "A speaker giving a presentation at a conference.",
+      "imageUrl": "https://picsum.photos/seed/serv4/600/400",
+      "imageHint": "presentation conference"
+    },
+    {
+      "id": "service-training",
+      "description": "A group of people in a training session in a classroom.",
+      "imageUrl": "https://picsum.photos/seed/serv5/600/400",
+      "imageHint": "classroom training"
+    }
+  ]
 }
