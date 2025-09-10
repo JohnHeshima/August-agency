@@ -22,9 +22,14 @@ export default function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
+    
+    // Add event listener only on the client side, after the component has mounted
     window.addEventListener('scroll', handleScroll);
-    // Initial check
-    handleScroll(); 
+
+    // Run the scroll handler once initially to set the correct state
+    handleScroll();
+
+    // Clean up the event listener when the component unmounts
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
