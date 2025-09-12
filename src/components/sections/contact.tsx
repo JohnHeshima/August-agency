@@ -10,13 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { firebaseConfig } from '@/lib/firebase-config';
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { submitContactForm } from '@/app/actions/contact';
 
-// Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Le nom doit contenir au moins 2 caractères.' }),
@@ -39,22 +34,19 @@ export default function Contact() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await addDoc(collection(db, 'contacts'), {
-        ...values,
-        createdAt: serverTimestamp(),
-      });
+    const result = await submitContactForm(values);
 
+    if (result.success) {
       toast({
         title: "Message Envoyé!",
         description: "Merci de nous avoir contactés. Nous reviendrons vers vous bientôt.",
       });
       form.reset();
-    } catch (error) {
-      console.error("Error adding document: ", error);
+    } else {
+      console.error("Error adding document: ", result.error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.",
+        description: result.error || "Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.",
         variant: 'destructive'
       });
     }
