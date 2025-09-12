@@ -47,7 +47,7 @@ export default function News() {
           {newsData.map((item) => {
             const image = PlaceHolderImages.find(img => img.id === item.imageId);
             return (
-              <Card key={item.id} className="bg-background border-border/50 flex flex-col overflow-hidden group">
+              <Card key={item.id} className="bg-background border-border/50 flex flex-col overflow-hidden group transition-all duration-300 hover:shadow-primary/20 hover:shadow-2xl hover:-translate-y-2">
                  {image && (
                     <div className="relative h-56 w-full overflow-hidden">
                         <Image

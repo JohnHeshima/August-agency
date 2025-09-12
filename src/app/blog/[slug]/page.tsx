@@ -87,7 +87,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                         </Button>
                     </div>
 
-                    <Card className="bg-card border-border/50">
+                    <Card className="bg-card border-border/50 shadow-lg shadow-primary/10">
                         <CardContent className="p-8">
                              <div className="prose prose-invert max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground">
                                 <p className="text-lg leading-relaxed">{post.description}</p>
