@@ -34,7 +34,7 @@ export default function Contact() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    /*
+    
     const result = await submitContactForm(values);
 
     if (result.success) {
@@ -51,12 +51,6 @@ export default function Contact() {
         variant: 'destructive'
       });
     }
-    */
-   console.log("Formulaire soumis (fonctionnalité désactivée temporairement) :", values);
-    toast({
-      title: "Fonctionnalité en pause",
-      description: "L'envoi de formulaire est temporairement désactivé.",
-    });
   }
 
   return (
