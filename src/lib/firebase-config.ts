@@ -4,9 +4,9 @@ const firebaseConfig = {
   apiKey: "AIzaSyAdImLZ984aha-Mbs1rpRDNPnBw7NcmsWQ",
   authDomain: "cotemind.firebaseapp.com",
   projectId: "cotemind",
-  storageBucket: "cotemind.appspot.com",
+  storageBucket: "cotemind.firebasestorage.app",
   messagingSenderId: "686489112912",
-  appId: "1:686489112912:web:dfc304fe24e9e9950ddc55"
+  appId: "1:686489112912:web:1764f41336e1bd170ddc55"
 };
 
 export { firebaseConfig };
