@@ -25,11 +25,13 @@ export async function submitContactForm(data: ContactFormData) {
   }
 
   try {
+    const serviceAccountString = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+    if (!serviceAccountString) {
+      console.error("Firebase Admin initialization error: GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is not set.");
+      return { success: false, error: "La configuration du serveur est incomplète. Les identifiants de l'application ne sont pas définis." };
+    }
+
     if (!getApps().length) {
-      const serviceAccountString = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-      if (!serviceAccountString) {
-        throw new Error("The GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is not set.");
-      }
       const serviceAccount = JSON.parse(serviceAccountString);
       initializeApp({
         credential: cert(serviceAccount),
@@ -46,14 +48,13 @@ export async function submitContactForm(data: ContactFormData) {
       ...validation.data,
       createdAt: Timestamp.now(),
     });
-    return { success: true };
+    return { success: true, message: "Form submitted successfully." };
   } catch (error) {
     let errorMessage = 'An unknown error occurred while writing to Firestore.';
     if (error instanceof Error) {
         errorMessage = error.message;
     }
     console.error("Firestore write error:", errorMessage);
-    // Return a more generic error message to the client for security.
     return { success: false, error: "Could not submit the form. Please try again later." };
   }
 }
