@@ -18,13 +18,19 @@ const formSchema = z.object({
 type ContactFormData = z.infer<typeof formSchema>;
 
 export async function submitContactForm(data: ContactFormData) {
+  const validation = formSchema.safeParse(data);
+  if (!validation.success) {
+    console.error('Form validation failed:', validation.error.flatten().fieldErrors);
+    return { success: false, error: 'Invalid form data. Please check the fields and try again.' };
+  }
+
   try {
-    // Initialize Firebase Admin SDK inside the function to ensure it runs on each serverless invocation
     if (!getApps().length) {
-      if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
-        throw new Error("GOOGLE_APPLICATION_CREDENTIALS_JSON is not set. Firebase Admin SDK cannot be initialized.");
+      const serviceAccountString = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+      if (!serviceAccountString) {
+        throw new Error("The GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is not set.");
       }
-      const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      const serviceAccount = JSON.parse(serviceAccountString);
       initializeApp({
         credential: cert(serviceAccount),
       });
@@ -34,12 +40,6 @@ export async function submitContactForm(data: ContactFormData) {
     return { success: false, error: "Could not connect to the database. Please check server configuration." };
   }
   
-  const validation = formSchema.safeParse(data);
-  if (!validation.success) {
-    console.error('Form validation failed:', validation.error.flatten().fieldErrors);
-    return { success: false, error: 'Invalid form data.' };
-  }
-
   try {
     const db = getFirestore();
     await addDoc(collection(db, 'contacts'), {
