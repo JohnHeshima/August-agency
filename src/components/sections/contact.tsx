@@ -43,10 +43,10 @@ export default function Contact() {
       });
       form.reset();
     } else {
-      console.error("Error adding document: ", result.error);
+      console.error("Error submitting form: ", result.error);
       toast({
         title: "Erreur",
-        description: result.error || "Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.",
+        description: "Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.",
         variant: 'destructive'
       });
     }
