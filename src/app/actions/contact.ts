@@ -6,10 +6,11 @@ import { z } from 'zod';
 
 // This is a server-only file. The client will never see this.
 // IMPORTANT: You must generate a service account key in your Firebase project settings
-// and place it in a .env.local file.
+// and place it in a .env.local file as GOOGLE_APPLICATION_CREDENTIALS_JSON.
 // GOOGLE_APPLICATION_CREDENTIALS_JSON='{"type": "service_account", ...}'
 
 try {
+  // Initialize Firebase Admin SDK
   if (!getApps().length) {
     if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
       const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
@@ -17,21 +18,16 @@ try {
         credential: cert(serviceAccount),
       });
     } else {
-        // Fallback for local development if GOOGLE_APPLICATION_CREDENTIALS_JSON is not set
-        // This will have limited permissions compared to a service account.
-        // For production, always use a service account.
-        console.warn("Service account credentials not found. Initializing with default app for local dev.");
-        // This part won't work on a deployed server without credentials.
-        // The original firebase-config is for client-side, we need admin for server.
-        // Let's assume for now the user needs to set up the env var.
+      // This fallback is for environments where the env var might not be set,
+      // but it won't work on a deployed server without credentials.
+      // It's a safeguard for local development but the env var is the correct method.
+      console.warn("GOOGLE_APPLICATION_CREDENTIALS_JSON is not set. Firebase Admin SDK might not be initialized correctly.");
+      initializeApp();
     }
   }
 } catch (error: any) {
   console.error("Firebase Admin initialization error:", error.message);
 }
-
-
-const db = getFirestore();
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -43,6 +39,7 @@ const formSchema = z.object({
 type ContactFormData = z.infer<typeof formSchema>;
 
 export async function submitContactForm(data: ContactFormData) {
+  // Ensure the Admin SDK is initialized before trying to use it.
   if (!getApps().length) {
     const errorMsg = "Firebase Admin SDK is not initialized. Make sure GOOGLE_APPLICATION_CREDENTIALS_JSON is set in your environment variables.";
     console.error(errorMsg);
@@ -51,10 +48,13 @@ export async function submitContactForm(data: ContactFormData) {
 
   const validation = formSchema.safeParse(data);
   if (!validation.success) {
+    // This provides detailed validation errors to the server console for debugging
+    console.error('Form validation failed:', validation.error.flatten().fieldErrors);
     return { success: false, error: 'Invalid form data.' };
   }
 
   try {
+    const db = getFirestore();
     await addDoc(collection(db, 'contacts'), {
       ...validation.data,
       createdAt: Timestamp.now(),
@@ -66,6 +66,7 @@ export async function submitContactForm(data: ContactFormData) {
         errorMessage = error.message;
     }
     console.error("Firestore write error:", errorMessage);
-    return { success: false, error: errorMessage };
+    // Return a more generic error message to the client for security.
+    return { success: false, error: "Could not submit the form. Please try again later." };
   }
 }
