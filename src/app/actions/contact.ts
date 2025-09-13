@@ -19,7 +19,7 @@ type ContactFormData = z.infer<typeof formSchema>;
 
 export async function submitContactForm(data: ContactFormData) {
   try {
-    // Initialize Firebase Admin SDK inside the function
+    // Initialize Firebase Admin SDK inside the function to ensure it runs on each serverless invocation
     if (!getApps().length) {
       if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
         throw new Error("GOOGLE_APPLICATION_CREDENTIALS_JSON is not set. Firebase Admin SDK cannot be initialized.");
