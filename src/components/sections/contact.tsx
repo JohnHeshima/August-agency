@@ -34,7 +34,15 @@ export default function Contact() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    
+    // Temporarily disabled due to platform provisioning issues.
+    toast({
+        title: "Fonctionnalité désactivée",
+        description: "L'envoi de formulaire est temporairement désactivé en raison de problèmes de configuration de la plateforme.",
+        variant: 'destructive'
+    });
+    return;
+
+    /*
     const result = await submitContactForm(values);
 
     if (result.success) {
@@ -51,6 +59,7 @@ export default function Contact() {
         variant: 'destructive'
       });
     }
+    */
   }
 
   return (
