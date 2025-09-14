@@ -1,13 +1,37 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Autoplay from "embla-carousel-autoplay"
+import React from 'react';
+import { cn } from '@/lib/utils';
 
 export default function Hero() {
   const heroImages = PlaceHolderImages.filter(img => img.id.startsWith('hero-'));
+
+  const [api, setApi] = React.useState<CarouselApi>()
+  const [current, setCurrent] = React.useState(0)
+
+  React.useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCurrent(api.selectedScrollSnap())
+
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap())
+    }
+
+    api.on("select", onSelect)
+
+    return () => {
+      api.off("select", onSelect)
+    }
+  }, [api])
+
 
   const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -17,10 +41,12 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full">
       <Carousel
+        setApi={setApi}
         className="w-full h-full"
         plugins={[
           Autoplay({
             delay: 5000,
+            stopOnInteraction: true,
           }),
         ]}
         opts={{
@@ -44,8 +70,6 @@ export default function Hero() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-white/20" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 border-white/20" />
       </Carousel>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-primary leading-tight tracking-tighter">
@@ -59,6 +83,20 @@ export default function Hero() {
             Contactez-nous
           </Link>
         </Button>
+      </div>
+
+       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3">
+        {heroImages.map((_, index) => (
+            <button
+                key={index}
+                onClick={() => api?.scrollTo(index)}
+                className={cn(
+                    "h-2 w-2 rounded-full bg-white/50 transition-all duration-300",
+                    current === index ? "w-4 bg-primary" : "hover:bg-white"
+                )}
+                aria-label={`Go to slide ${index + 1}`}
+            />
+        ))}
       </div>
     </section>
   );
