@@ -32,7 +32,7 @@ export default function Contact() {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name: '', email: '', subject: '', message: '' },
+    defaultValues: { name: '', email: '', office: undefined, subject: '', message: '' },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -49,7 +49,7 @@ export default function Contact() {
     if (result.success) {
       toast({
         title: "Message Envoyé!",
-        description: "Merci de nous avoir contactés. Nous reviendrons vers vous bientôt.",
+        description: `Votre message a bien été envoyé à l'agence de ${values.office}. Nous reviendrons vers vous bientôt.`,
       });
       form.reset();
     } else {
