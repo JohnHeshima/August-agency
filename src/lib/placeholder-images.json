@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-1",
-      "description": "A large truck driving through a mining area.",
-      "imageUrl": "https://picsum.photos/seed/hero1/1920/1080",
-      "imageHint": "logistics truck"
+      "description": "A miner holding a large piece of copper ore.",
+      "imageUrl": "https://storage.googleapis.com/aifire.dev/explorations/clvtdx2c0000008l41y1v5897/August-agency-2.jpg",
+      "imageHint": "mining copper"
     },
     {
       "id": "hero-2",
